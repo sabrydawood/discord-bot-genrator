@@ -1,0 +1,93 @@
+import { promises as fs } from "fs"
+import path from "path"
+import { Initializer, Language, GenratorConfig, FileSystemManager, getPackageScripts } from "./utils/index"
+import { getMainFile, getMainFileTS } from "./templates/templates"
+
+export class FileSys implements FileSystemManager, Initializer {
+ private static instance: FileSys
+
+ private language: Language | undefined
+
+ private config: GenratorConfig | undefined
+
+ private CURRENT_DIR: string = process.cwd()
+
+ async initialize(config?: GenratorConfig) {
+  this.language = config?.language
+  this.config = config
+ }
+
+ createConfig(config: GenratorConfig): Promise<void> {
+  return fs.writeFile(path.join(this.CURRENT_DIR, config.name, "botGenrator.json"), JSON.stringify(config, null, 2))
+ }
+
+ async createProjectDirectory(name: string): Promise<string> {
+  const filePath = path.join(this.CURRENT_DIR, name)
+  await fs.mkdir(filePath)
+  return filePath
+ }
+
+ async createSourceDirectory(name: string): Promise<string> {
+  const filePath = path.join(this.CURRENT_DIR, name, "src")
+  await fs.mkdir(filePath)
+  return filePath
+ }
+
+ async createEntryFile(filePath: string) {
+  const extension = this.language === "javascript" ? "js" : "ts"
+  const template = extension === "js" ? getMainFile() : getMainFileTS()
+  return fs.writeFile(path.join(filePath, `index.${extension}`), template)
+ }
+
+ createDirectory(name: string): Promise<void> {
+  return fs.mkdir(name)
+ }
+
+ createFile(filePath: string, data: string): Promise<void> {
+  return fs.writeFile(filePath, data)
+ }
+
+ async findFile(filePath: string): Promise<void> {
+  try {
+   await fs.access(filePath)
+  } catch (err) {
+   throw new Error(`${filePath} was not found. Please make sure you're inside a Genrated project.`)
+  }
+ }
+
+ async getFileToJson(filePath: string): Promise<GenratorConfig> {
+  const text = await fs.readFile(filePath, "utf8")
+  const json = JSON.parse(text)
+  return json
+ }
+
+ getCurrentDir(): string {
+  return this.CURRENT_DIR
+ }
+
+ async updatePackageJson(basePath: string) {
+  if (!this.config || !this.language) throw new Error("Config not initialized.")
+  const packageJson = path.join(basePath, "package.json")
+  const encoding = "utf8"
+  const buffer = await fs.readFile(packageJson, encoding)
+  const json = JSON.parse(buffer)
+  json.scripts = getPackageScripts(this.language)
+  return fs.writeFile(packageJson, JSON.stringify(json, null, 2))
+ }
+
+ async exists(filePath: string): Promise<boolean> {
+  try {
+   await fs.access(filePath)
+   return true
+  } catch (err) {
+   return false
+  }
+ }
+
+ static getFileSystem(): FileSys {
+  if (!FileSys.instance) {
+   FileSys.instance = new FileSys()
+  }
+  return FileSys.instance
+ }
+}

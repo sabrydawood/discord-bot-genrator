@@ -1,0 +1,69 @@
+{
+  "name": "bot-genrator",
+  "version": "0.0.4-beta",
+  "description": "A simple Discord Bot Genrator",
+  "main": "./lib/index.js",
+  "bin": {
+    "genrator": "./lib/index.js"
+  },
+  "engines": {
+    "node": ">=16.15.0",
+		"npm": ">=8.19.2",
+		"yarn": ">=1.20.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon ./src/index.ts",
+    "start": "node ./lib/index.js",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+		"format": "prettier --write 'src/**/*.ts'",
+		"check-foramt": "prettier --check 'src/**/*.ts'"
+    
+  },
+  "repository": "git+https://github.com/virgel1995/bot-genrator.git",
+  "keywords": [
+    "discord",
+    "discord.js",
+    "discord project",
+    "discord bot",
+    "command line",
+    "cli tool",
+    "cli"
+  ],
+  "author": "Virus24",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/virgel1995/bot-genrator/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test && yarn build",
+      "pre-push": "echo hello"
+    }
+  },
+  "homepage": "https://github.com/virgel1995/bot-genrator#readme",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "log-symbols": "^4.0.0",
+    "prompts": "^2.3.2"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/jest": "^26.0.19",
+    "@types/log-symbols": "^3.0.0",
+    "@types/node": "^14.14.14",
+    "@types/prompts": "^2.0.6",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.3.6",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^8.9.1",
+		"prettier": "2.7.1",
+    "typescript": "^4.1.3"
+  }
+}

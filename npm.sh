@@ -1,0 +1,1 @@
+echo npm config set cache ./cache --global
