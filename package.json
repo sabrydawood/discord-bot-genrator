@@ -21,7 +21,7 @@
 		"check-foramt": "prettier --check 'src/**/*.ts'"
     
   },
-  "repository": "git+https://github.com/virgel1995/bot-genrator.git",
+  "repository": "git+https://github.com/virgel1995/discord-bot-genrator.git",
   "keywords": [
     "discord",
     "discord.js",
@@ -34,7 +34,7 @@
   "author": "Virus24",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/virgel1995/bot-genrator/issues"
+    "url": "https://github.com/virgel1995/discord-bot-genrator/issues"
   },
   "husky": {
     "hooks": {
@@ -42,7 +42,7 @@
       "pre-push": "echo hello"
     }
   },
-  "homepage": "https://github.com/virgel1995/bot-genrator#readme",
+  "homepage": "https://github.com/virgel1995/discord-bot-genrator#readme",
   "dependencies": {
     "chalk": "^4.0.0",
     "log-symbols": "^4.0.0",
